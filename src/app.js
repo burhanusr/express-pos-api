@@ -1,6 +1,7 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
@@ -18,7 +19,8 @@ const app = express();
 
 // middleware
 if (process.env.NODE_ENV === 'development') app.use(logger('dev'));
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

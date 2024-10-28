@@ -24,12 +24,14 @@ const removeProductImage = (image) => {
 
 exports.getAllProducts = catchAsync(async (req, res) => {
   if (req.query.category) {
+    // take category id
     req.query.category = await Category.findOne(
       { name: { $regex: req.query.category, $options: 'i' } },
       { _id: 1 }
     );
   }
 
+  // take tags id
   if (req.query.tags) {
     const tags = req.query.tags.split(' ');
 
@@ -47,7 +49,7 @@ exports.getAllProducts = catchAsync(async (req, res) => {
     .selectFields()
     .paginate();
 
-  const products = await features.query;
+  const products = await features.query.populate('category').populate('tags');
 
   res.status(200).json({
     status: 'success',

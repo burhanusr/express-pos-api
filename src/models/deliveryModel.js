@@ -4,25 +4,25 @@ const deliverySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide an address'],
+      required: [true, 'Please provide your fullname'],
       maxLength: [255, 'Maximum length allowed is 255 character'],
     },
-    kelurahan: {
+    village: {
       type: String,
-      required: [true, 'Please provide an urban village'],
+      required: [true, 'Please provide a village'],
       maxLength: [255, 'Maximum length allowed is 255 character'],
     },
-    kecamatan: {
+    district: {
       type: String,
       required: [true, 'Please provide a district'],
       maxLength: [255, 'Maximum length allowed is 255 character'],
     },
-    kabupaten: {
+    regency: {
       type: String,
       required: [true, 'Please provide a regency'],
       maxLength: [255, 'Maximum length allowed is 255 character'],
     },
-    provinsi: {
+    province: {
       type: String,
       required: [true, 'Please provide a province'],
       maxLength: [255, 'Maximum length allowed is 255 character'],

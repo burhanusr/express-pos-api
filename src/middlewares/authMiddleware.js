@@ -12,11 +12,13 @@ exports.protect = catchAsync(async (req, res, next) => {
   // getting token
   if (authorization && authorization.startsWith('Bearer')) {
     token = authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   // check if token exists
   if (!token) {
-    return next(new AppError('You are not logged in!', 401));
+    throw new AppError('You are not logged in!', 401);
   }
 
   // verification token
@@ -28,23 +30,24 @@ exports.protect = catchAsync(async (req, res, next) => {
   // check if user still exists
   const loggedUser = await User.findById(decoded.id);
   if (!loggedUser) {
-    return next(
-      new AppError(
-        'The user belonging to this token does no longer exist.',
-        401
-      )
+    throw new AppError(
+      'The user belonging to this token does no longer exist.',
+      401
     );
   }
 
   // check if user changed password after the token was issued
   if (loggedUser.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError('User recently changed password! Please log in again.', 401)
+    throw new AppError(
+      'User recently changed password! Please log in again.',
+      401
     );
   }
 
   // grant access to protected route
+  console.log('middleware protect');
   req.user = loggedUser;
+
   next();
 });
 

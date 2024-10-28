@@ -9,4 +9,6 @@ router.use(authMiddleware.protect);
 
 router.route('/').get(cartController.getCart).post(cartController.addCart);
 
+router.post('/deleteItem', cartController.deleteCart);
+
 module.exports = router;
